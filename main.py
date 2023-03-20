@@ -47,13 +47,22 @@ class MyClient(discord.Client):
             x = preprocess_input(np.array(img, dtype=np.float32))
             # Hacer la predicción con la CNN
             x_ = image.img_to_array(x)
-            preds = model.predict(np.array([x_]))
+            preds = model.predict(np.array([x_]))#.reshape(100352)
             # Decodificar las predicciones y obtener la etiqueta con mayor probabilidad
-            label = decode_predictions(preds, top=3)
+            label = decode_predictions(preds, top=3)[0]
             # Verificar si la etiqueta se refiere a comida
             await message.channel.send(
-              f"Comocchi esta comiendo {label}, @OneTapKevs#9961 y @cvtvlinv#0535"
+              f"Comocchi esta comiendo {label[0][1]} ó {label[1][1]} ó {label[2][1]} xD @OneTapKev y @cvtvlinv"
             )
+
+            for x in decode_predictions(preds, top=100)[0]:
+              if 'water' in x[1]:
+                print("--------------yes--------------")
+                break
+              else:
+
+                print(x[1])
+                
 
 
 intents = discord.Intents.default()
